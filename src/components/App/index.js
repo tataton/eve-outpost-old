@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import 'src/assets/stylesheets/base.scss';
 
 
-function App({ name }) {
+function App() {
   return (
-    <h1>Hello, {name}!</h1>
+    <h1>Hello!</h1>
   );
 };
 
 App.propTypes = {
-  name: PropTypes.string,
+  name: PropTypes.string
 };
 
 export default App;
