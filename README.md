@@ -1,5 +1,8 @@
-# React + Node Starter
+# React + Node + Semantic-UI Starter
 _for [Heroku](https://www.heroku.com/) deployment_
+
+## OVERVIEW from Andy Taton
+To [alanbsmith](https://github.com/alanbsmith)'s react-node-example repo, I've added very basic Semantic-UI support. Everything else is the same, so I reproduce his README below.
 
 ## OVERVIEW
 This is a simple starter to get you up and running for React projects. This is intended to provide:
