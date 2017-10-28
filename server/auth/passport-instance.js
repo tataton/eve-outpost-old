@@ -8,7 +8,7 @@ const request = require('request');
 
 /* Database queries contained in a service, for future
 unit testing. */
-// const UserService = require('../services/user');
+const UserService = require('../services/user-service');
 
 passport.serializeUser((user, done) => {
   console.log(user);

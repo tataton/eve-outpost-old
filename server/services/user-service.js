@@ -1,7 +1,5 @@
 /* Service for handling user information. Interfaces with
 user database. */
-const User = require('../models/user');
+const User = require('../models/user-model');
 
-module.exports = {
-    
-}
+module.exports = {};
