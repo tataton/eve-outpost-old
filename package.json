@@ -30,6 +30,8 @@
     "node-sass": "^4.5.3",
     "passport": "^0.4.0",
     "passport-oauth2": "^1.4.0",
+    "pg": "^7.3.0",
+    "pg-hstore": "^2.3.2",
     "prop-types": "^15.6.0",
     "raf": "^3.3.2",
     "react": "^16.0.0",
@@ -37,6 +39,7 @@
     "request": "^2.83.0",
     "sass-loader": "^6.0.6",
     "semantic-ui-react": "^0.75.1",
+    "sequelize": "^4.19.0",
     "style-loader": "^0.18.2",
     "webpack": "^3.6.0"
   },
