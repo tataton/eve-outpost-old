@@ -6,6 +6,8 @@ const config = require('../../config');
 const OAuth2Strategy = require('passport-oauth2');
 const request = require('request');
 
+const User = require('../services/service-database').User;
+
 passport.serializeUser((user, done) => {
   console.log(user);
   done(null, user);
@@ -35,9 +37,26 @@ passport.use(new OAuth2Strategy({
         }
       }, (err, res, body) => {
         if (err) return cb(err);
-        /* Here, save accessToken and refreshToken to
-        database under CharacterOwnerHash user profile. */
         const character = JSON.parse(body);
+        // Update (if already registered) or save character user profile.
+        User
+          .findOne({where: {characterID: character.CharacterID}})
+          .then(foundUser => {
+            const userProps = {
+              accessToken, 
+              accessExpires: character.ExpiresOn, 
+              refreshToken,
+              characterID: character.CharacterID,
+              characterName: character.CharacterName,
+              characterOwnerHash: character.CharacterOwnerHash,
+              accountType: 'market'
+            };
+            if (foundUser) {
+              foundUser.update(userProps, {fields: ['accessToken', 'accessExpires', 'refreshToken']})
+            } else {
+              User.create(userProps)
+            }
+          });
         return cb(null, {character});
       }
     );
