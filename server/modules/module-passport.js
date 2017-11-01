@@ -1,10 +1,10 @@
-/* Module that configures passport for read-only login,
-and then exports its instance. */
+/* Module that configures passport for both read- and
+write-access login, and then exports its instance. */
 
 const passport = require('passport');
 const config = require('../../config');
 const OAuth2Strategy = require('passport-oauth2');
-const request = require('request');
+const request = require('request-promise');
 
 const User = require('../services/service-database').User;
 
@@ -33,11 +33,9 @@ passport.use('oauth2-read', new OAuth2Strategy({
         url: config.AUTH_VERIFY_URL,
         headers: {
           'Authorization': `Bearer ${accessToken}`
-        }
-      }, (err, res, body) => {
-        if (err) return cb(err);
-        const character = JSON.parse(body);
-        // Update (if already registered) or save character user profile.
+        },
+        json: true})
+      .then(character => {
         User
           .findOne({where: {characterID: character.CharacterID}})
           .then(foundUser => {
@@ -51,14 +49,15 @@ passport.use('oauth2-read', new OAuth2Strategy({
               apiAccess: false
             };
             if (foundUser) {
-              foundUser.update(userProps, {fields: ['accessToken', 'accessExpires', 'refreshToken']})
+              foundUser.update(userProps,
+                {fields: ['accessToken', 'accessExpires', 'refreshToken']})
             } else {
               User.create(userProps)
             }
           });
-        return cb(null, {character});
-      }
-    );
+        return cb(null, {character})
+      })
+      .catch(err => {return cb(err)});
   }
 ));
 
@@ -76,11 +75,9 @@ passport.use('oauth2-write', new OAuth2Strategy({
         url: config.AUTH_VERIFY_URL,
         headers: {
           'Authorization': `Bearer ${accessToken}`
-        }
-      }, (err, res, body) => {
-        if (err) return cb(err);
-        const character = JSON.parse(body);
-        // Update (if already registered) or save character user profile.
+        },
+        json: true})
+      .then(character => {
         User
           .findOne({where: {characterID: character.CharacterID}})
           .then(foundUser => {
@@ -94,14 +91,15 @@ passport.use('oauth2-write', new OAuth2Strategy({
               apiAccess: true
             };
             if (foundUser) {
-              foundUser.update(userProps, {fields: ['accessToken', 'accessExpires', 'refreshToken', 'apiAccess']})
+              foundUser.update(userProps,
+                {fields: ['accessToken', 'accessExpires', 'refreshToken', 'apiAccess']})
             } else {
               User.create(userProps)
             }
           });
-        return cb(null, {character});
-      }
-    );
+        return cb(null, {character})
+      })
+      .catch(err => {return cb(err)});
   }
 ));
 
