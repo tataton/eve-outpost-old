@@ -8,8 +8,8 @@ const passport = require('passport');
 app.use(passport.initialize());
 
 /** ---------- ROUTES ---------- **/
-const auth = require('./server/routes/route-auth');
-app.use('/auth', auth);
+const authRead = require('./server/routes/route-auth-readonly');
+app.use('/auth/read', authRead);
 
 app.use(express.static(path.join(__dirname, 'dist')));
 

@@ -4,12 +4,12 @@ identification. */
 
 const express = require('express');
 const router = express.Router();
-const passport = require('../modules/module-passport');
+const passport = require('../modules/module-passport-readonly');
 
-router.get('/', passport.authenticate('oauth2'));
+router.get('/login', passport.authenticate('oauth2'));
 
 router.get('/callback', passport.authenticate('oauth2', {failureRedirect: '/'}), (req, res) => {
-    // req.session.passport.user now contains characterID.
+    // req.session.passport.user will now contain character info.
     res.redirect('/');
 });
 

@@ -9,7 +9,6 @@ const request = require('request');
 const User = require('../services/service-database').User;
 
 passport.serializeUser((user, done) => {
-  console.log(user);
   done(null, user);
 });
 
@@ -26,9 +25,11 @@ passport.use(new OAuth2Strategy({
     tokenURL: config.TOKEN_URL,
     clientID: config.AUTH_CLIENT_ID,
     clientSecret: config.AUTH_CLIENT_SECRET,
-    callbackURL: config.OUR_AUTH_CALLBACK_URL
+    callbackURL: config.OUR_AUTH_CALLBACK_URL,
+    passReqToCallback: true
   },
-  (accessToken, refreshToken, profile, cb) => {
+  (req, accessToken, refreshToken, profile, cb) => {
+    console.log(req);
     request({
         method: 'GET',
         url: config.AUTH_VERIFY_URL,
