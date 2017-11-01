@@ -16,9 +16,8 @@ const userSchema = {
         allowNull: false,
         unique: true
     },
-    accountType: {
-    // Possible values: 'market', 'main', 'alt'
-        type: Sequelize.STRING,
+    apiAccess: {
+        type: Sequelize.BOOLEAN,
         allowNull: false
     },
     accessToken: {
