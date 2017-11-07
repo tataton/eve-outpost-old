@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const config = require('./config');
+const PORT = process.env.PORT || config.PORT;
 
 const passport = require('passport');
 
@@ -23,8 +24,8 @@ app.get('*', (req, res) => {
   res.redirect('/');
 });
 
-app.listen(config.PORT, error => (
+app.listen(PORT, error => (
   error
     ? console.error(error)
-    : console.info(`Listening on port ${config.PORT}. Visit http://localhost:${config.PORT}/ in your browser.`)
+    : console.info(`Listening on port ${PORT}. Visit http://localhost:${PORT}/ in your browser.`)
 ));
