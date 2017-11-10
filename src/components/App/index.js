@@ -1,17 +1,61 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import FixedMenu from '../FixedMenu';
 
 import 'src/assets/stylesheets/base.scss';
 
+class App extends Component {
 
-function App() {
-  return (
-    <h1>Hello!</h1>
-  );
-};
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoadingCharacter: true,
+      isLoggedIn: false,
+      loggedInCharacterName: '',
+      loggedInCharacterID: 0
+    };
+    this.logOutCharacter = this.logOutCharacter.bind(this);
+    this.logInCharacter = this.logInCharacter.bind(this);
+  }
 
-App.propTypes = {
-  name: PropTypes.string
-};
+  logOutCharacter() {
+    this.setState((state) => ({
+      isLoadingCharacter: false,
+      isLoggedIn: false,
+      loggedInCharacterName: '',
+      loggedInCharacterID: 0
+    }));
+  }
+
+  logInCharacter({characterID, characterName}) {
+    this.setState((state) => ({
+      isLoadingCharacter: false,
+      isLoggedIn: true,
+      loggedInCharacterName: characterName,
+      loggedInCharacterID: characterID
+    }));
+  }
+
+  componentDidMount() {
+    fetch('/auth/getuserinfo', {credentials: 'include'})
+      .then(response => response.json())
+      .then(result => {
+        this.logInCharacter(result);
+      })
+      .catch(() => {this.logOutCharacter()})
+  }
+
+  render() {
+    return (
+      <div>
+        <FixedMenu
+          isLoadingCharacter={this.state.isLoadingCharacter}
+          isLoggedIn={this.state.isLoggedIn}
+          loggedInCharacterName={this.state.loggedInCharacterName}
+          loggedInCharacterID={this.state.loggedInCharacterID}
+        />
+      </div>
+    );
+  }
+}
 
 export default App;

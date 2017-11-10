@@ -5,6 +5,17 @@ const passport = require('passport');
 const config = require('../../config');
 const OAuth2Strategy = require('passport-oauth2');
 const request = require('request-promise');
+const FQDN = process.env.FQDN || config.FQDN;
+const AUTH_URL = 'https://login.eveonline.com/oauth/authorize';
+const TOKEN_URL = 'https://login.eveonline.com/oauth/token';
+const READ_AUTH_CLIENT_ID = process.env.READ_AUTH_CLIENT_ID || config.READ_AUTH_CLIENT_ID;
+const READ_AUTH_CLIENT_SECRET = process.env.READ_AUTH_CLIENT_SECRET || config.READ_AUTH_CLIENT_SECRET;
+const READ_AUTH_CALLBACK_URL = `http://${FQDN}/auth/read/callback`;
+const WRITE_AUTH_CLIENT_ID = process.env.WRITE_AUTH_CLIENT_ID || config.WRITE_AUTH_CLIENT_ID;
+const WRITE_AUTH_CLIENT_SECRET = process.env.WRITE_AUTH_CLIENT_SECRET || config.WRITE_AUTH_CLIENT_SECRET;
+const WRITE_AUTH_CALLBACK_URL = 'http://${FQDN}/auth/write/callback';
+const WRITE_AUTH_SCOPES = ['esi-assets.read_assets.v1', 'esi-markets.read_character_orders.v1'];
+const AUTH_VERIFY_URL = 'https://login.eveonline.com/oauth/verify';
 
 const User = require('../services/service-database').User;
 
@@ -21,16 +32,16 @@ passport.deserializeUser((user, done) => {
 });
 
 passport.use('oauth2-read', new OAuth2Strategy({
-    authorizationURL: config.AUTH_URL,
-    tokenURL: config.TOKEN_URL,
-    clientID: config.READ_AUTH_CLIENT_ID,
-    clientSecret: config.READ_AUTH_CLIENT_SECRET,
-    callbackURL: config.READ_AUTH_CALLBACK_URL
+    authorizationURL: AUTH_URL,
+    tokenURL: TOKEN_URL,
+    clientID: READ_AUTH_CLIENT_ID,
+    clientSecret: READ_AUTH_CLIENT_SECRET,
+    callbackURL: READ_AUTH_CALLBACK_URL
   },
   (accessToken, refreshToken, profile, cb) => {
     request({
         method: 'GET',
-        url: config.AUTH_VERIFY_URL,
+        url: AUTH_VERIFY_URL,
         headers: {
           'Authorization': `Bearer ${accessToken}`
         },
@@ -62,17 +73,17 @@ passport.use('oauth2-read', new OAuth2Strategy({
 ));
 
 passport.use('oauth2-write', new OAuth2Strategy({
-    authorizationURL: config.AUTH_URL,
-    tokenURL: config.TOKEN_URL,
-    clientID: config.WRITE_AUTH_CLIENT_ID,
-    clientSecret: config.WRITE_AUTH_CLIENT_SECRET,
-    callbackURL: config.WRITE_AUTH_CALLBACK_URL,
-    scope: config.WRITE_AUTH_SCOPES
+    authorizationURL: AUTH_URL,
+    tokenURL: TOKEN_URL,
+    clientID: WRITE_AUTH_CLIENT_ID,
+    clientSecret: WRITE_AUTH_CLIENT_SECRET,
+    callbackURL: WRITE_AUTH_CALLBACK_URL,
+    scope: WRITE_AUTH_SCOPES
   },
   (accessToken, refreshToken, profile, cb) => {
     request({
         method: 'GET',
-        url: config.AUTH_VERIFY_URL,
+        url: AUTH_VERIFY_URL,
         headers: {
           'Authorization': `Bearer ${accessToken}`
         },

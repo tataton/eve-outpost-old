@@ -1,12 +1,16 @@
 const path = require('path');
 const express = require('express');
 const app = express();
+const passport = require('passport');
+const session = require('express-session');
+
 const config = require('./config');
 const PORT = process.env.PORT || config.PORT;
+const SESSION_SECRET = process.env.SESSION_SECRET || config.SESSION_SECRET;
 
-const passport = require('passport');
-
+app.use(session({secret: SESSION_SECRET}));
 app.use(passport.initialize());
+app.use(passport.session());
 
 /** ---------- ROUTES ---------- **/
 const auth = require('./server/routes/route-auth');

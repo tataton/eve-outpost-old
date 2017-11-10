@@ -20,6 +20,20 @@ router.get('/write/callback', passport.authenticate('oauth2-write', {failureRedi
     res.redirect('/');
 });
 
+router.get('/getuserinfo', (req, res) => {
+    if (req.isAuthenticated()) {
+        console.log('req.session.passport.user', req.session.passport.user);
+        res.send(
+            {
+                characterID: req.session.passport.user.character.CharacterID,
+                characterName: req.session.passport.user.character.CharacterName
+            }
+        );
+    } else {
+        res.sendStatus(403);
+    }
+});
+
 router.get('/logout', (req, res) => {
     req.logout();
     res.redirect('/');
