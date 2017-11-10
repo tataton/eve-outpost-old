@@ -13,9 +13,17 @@ const FixedMenu = ({isLoadingCharacter, isLoggedIn, loggedInCharacterName, logge
                 />
             )
         } else if (!isLoadingCharacter && isLoggedIn) {
-            const imgSrc = 'http://image.eveonline.com/Character/' + loggedInCharacterID + '_32.jpg';
+            const imgSrc = `http://image.eveonline.com/Character/${loggedInCharacterID}_32.jpg`;
             return (
-                <img src={imgSrc} height='32'/>
+                <div>
+                    <p style={{ display: 'inline' }}>
+                        Logged in as: {loggedInCharacterName}
+                    </p>
+                    <img 
+                        src={imgSrc}
+                        style={{ display: 'inline' }}
+                    />
+                </div>
             )
         }
     };
