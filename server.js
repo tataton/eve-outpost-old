@@ -1,14 +1,33 @@
 const path = require('path');
 const express = require('express');
+const helmet = require('helmet');
 const app = express();
 const passport = require('passport');
 const session = require('express-session');
-
 const config = require('./config');
+const sessionStore = require('./server/services/service-database').SessionStore;
 const PORT = process.env.PORT || config.PORT;
 const SESSION_SECRET = process.env.SESSION_SECRET || config.SESSION_SECRET;
+const COOKIE_NAME = process.env.COOKIE_NAME || config.COOKIE_NAME;
 
-app.use(session({secret: SESSION_SECRET}));
+const sessionObject = {
+  secret: SESSION_SECRET,
+  name: COOKIE_NAME,
+  store: sessionStore,
+  saveUninitialized: true,
+  resave: false,
+  cookie: {}
+};
+
+/* Need to figure out how to use this correctly:
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1) // trust first proxy
+  sess.cookie.secure = true // serve secure cookies
+}
+*/
+
+app.use(helmet());
+app.use(session(sessionObject));
 app.use(passport.initialize());
 app.use(passport.session());
 

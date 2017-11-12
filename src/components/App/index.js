@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import Aux from 'react-aux';
 import FixedMenu from '../FixedMenu';
+import Main from '../Main';
 
 import 'src/assets/stylesheets/base.scss';
 
@@ -46,14 +48,18 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <Aux>
         <FixedMenu
           isLoadingCharacter={this.state.isLoadingCharacter}
           isLoggedIn={this.state.isLoggedIn}
           loggedInCharacterName={this.state.loggedInCharacterName}
           loggedInCharacterID={this.state.loggedInCharacterID}
         />
-      </div>
+        <Main
+          loggedInCharacterName={this.state.loggedInCharacterName}
+          loggedInCharacterID={this.state.loggedInCharacterID}
+        />
+      </Aux>
     );
   }
 }

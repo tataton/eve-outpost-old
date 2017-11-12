@@ -2,5 +2,11 @@ node_modules/
 *npm-debug.log
 *.DS_Store
 dist/bundle.js
+dist/*.png
+dist/*.eot
+dist/*.svg
+dist/*.woff
+dist/*.woff2
+dist/*.ttf
 coverage
 config.js

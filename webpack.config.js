@@ -12,6 +12,7 @@ module.exports = {
     loaders: [
       { test: /\.js?$/, loader: 'babel-loader', exclude: /node_modules/ },
       { test: /\.s?css$/, loader: 'style-loader!css-loader!sass-loader' },
+      { test: /\.(png|jpg|gif|ttf|woff|woff2|eot|svg)$/, loader: 'file-loader' }
     ]
   },
   resolve: {
@@ -19,7 +20,7 @@ module.exports = {
       path.resolve('./'),
       path.resolve('./node_modules'),
     ],
-    extensions: ['.js','.scss'],
+    extensions: ['.js','.scss','.css'],
   },
   output: {
     path: path.join(__dirname, '/dist'),

@@ -1,51 +1,62 @@
 import React from 'react';
-import { Menu, Image } from 'semantic-ui-react';
+import { Menu, Image, Button, Container } from 'semantic-ui-react';
+import { NavLink } from 'react-router-dom';
+import loginButton from '../../images/loginButton.png';
+import logo from '../../images/logo.png';
 
 const FixedMenu = ({isLoadingCharacter, isLoggedIn, loggedInCharacterName, loggedInCharacterID}) => {
 
-    const rightMenuItem = () => {
+    const rightMenuItems = () => {
         if (!isLoadingCharacter && !isLoggedIn) {
             return (
-                <Image
-                    src='images/EVE_SSO_Login_Buttons_Large_White.png'
-                    as='a'
-                    href='/auth/read/login'
-                />
+                <Menu.Item position='right' borderless>
+                    <Image
+                        src={loginButton}
+                        size='small'
+                        as='a'
+                        href='/auth/read/login'
+                    />
+                </Menu.Item>
             )
         } else if (!isLoadingCharacter && isLoggedIn) {
-            const imgSrc = `http://image.eveonline.com/Character/${loggedInCharacterID}_32.jpg`;
+            const imgSrc = `http://image.eveonline.com/Character/${loggedInCharacterID}_64.jpg`;
             return (
-                <div>
-                    <p style={{ display: 'inline' }}>
-                        Logged in as: {loggedInCharacterName}
-                    </p>
-                    <img 
+                <Menu.Item position='right' borderless>
+                    <Image 
                         src={imgSrc}
-                        style={{ display: 'inline' }}
+                        size='mini'
+                        style={{ marginRight: '1.5em' }}
                     />
-                </div>
+                    {loggedInCharacterName}
+                    <Button
+                        as='a'
+                        href='/auth/logout'
+                        style={{ marginLeft: '1.5em' }}
+                    >
+                        Logout
+                    </Button>
+                </Menu.Item>
             )
         }
     };
 
     return (
-        <Menu fixed='top' inverted>
-            <Menu.Item>
-                <Image 
-                    size='mini'
-                    as='a'
-                    src='images/Factory.png'
-                    style={{ marginRight: '1.5em' }}
-                />
-                EVE Outpost
-            </Menu.Item>
-            <Menu.Item as='a'>Home</Menu.Item>
-            <Menu.Item as='a'>Market Viewer</Menu.Item>
-            <Menu.Item position='right'>
-                {rightMenuItem()}
-            </Menu.Item>
-        </Menu>
+        <Container>
+            <Menu fixed='top' inverted>
+                <Menu.Item header>
+                    <Image 
+                        size='mini'
+                        src={logo}
+                        style={{ marginRight: '1.5em' }}
+                    />
+                    EVE Outpost
+                </Menu.Item>
+                <Menu.Item as={NavLink} exact to='/'>Home</Menu.Item>
+                <Menu.Item as={NavLink} to='/market'>Market Viewer</Menu.Item>
+                {rightMenuItems()}
+            </Menu>
+        </Container>
     )
-}
+};
 
 export default FixedMenu;
